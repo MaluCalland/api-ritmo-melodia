@@ -1,8 +1,8 @@
 services:
   api-ritmo-melodia:
     # Variáveis de ambiente do .env (execução)
-    env_file: 
-      - .env.local
+    #env_file: 
+    #  - .env.local
     build:
       context: .
       dockerfile: Dockerfile

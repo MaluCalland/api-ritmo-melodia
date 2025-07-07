@@ -32,7 +32,7 @@ class ArtistaService
         var_dump($ob->artists);
         echo "</pre>"; */
         foreach ($ob->artists as $artista) {
-            echo $artista->name . (method_exists($artista, "country") ?? " - " . $artista->country) . "<br>";
+            echo $artista->name . (property_exists($artista, "country") ? " - " . $artista->country : null) . (property_exists($artista, "area") ? ", " . $artista->area->name : null) . "<br>";
         }
 
     }
