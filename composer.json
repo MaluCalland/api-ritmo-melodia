@@ -1,0 +1,14 @@
+{
+    "name": "app/api-ritmo-melodia",
+    "description": "API",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "zircote/swagger-php": "4.8"
+    }
+}

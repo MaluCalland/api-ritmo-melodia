@@ -1,0 +1,15 @@
+services:
+  api-ritmo-melodia:
+    # Variáveis de ambiente do .env (execução)
+    env_file: 
+      - .env.local
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Visibilidade na build (construção)
+      args:
+        - APP_ENV=local
+    image: api-ritmo-melodia
+    container_name: api-ritmo-melodia
+    ports:
+      - "8001:80"
