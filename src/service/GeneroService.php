@@ -6,17 +6,17 @@ use App\model\enum\MusicBrainzEnum;
 
 class GeneroService
 {
-    public function listar()
+    public function listar($tag)
     {
         try {
-            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::generos->value . $_SERVER['QUERY_STRING'] . "&fmt=json&limit=100";
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::generos->value . $tag . "&fmt=json&limit=100";
 
             $response = Curl::getInstance()->get($url);
 
             $ob = json_decode($response);
 
             foreach ($ob->artists as $artista) {
-                echo "<a href=\"/api/artista/detalhar?" . $artista->id . "\">";
+                echo "<a href=\"/api/artista/detalhar?id=" . $artista->id . "\">";
                 echo $artista->name . "<br>";
                 echo "</a>";
             }

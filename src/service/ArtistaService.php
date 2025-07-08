@@ -8,22 +8,22 @@ use Exception;
 
 class ArtistaService
 {
-    public function listar()
+    public function listar($name)
     {
         try {
-            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . "?query=" . $_SERVER['QUERY_STRING'] . "&fmt=json&limit=100&inc=tags";
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . "?query=" . $name . "&fmt=json&limit=100&inc=tags";
 
             $response = Curl::getInstance()->get($url);
 
             $ob = json_decode($response);
 
             foreach ($ob->artists as $artista) {
-                echo "<a href=\"/api/artista/detalhar?" . $artista->id . "\">";
+                echo "<a href=\"/api/artista/detalhar?id=" . $artista->id . "\">";
                 echo $artista->name . (property_exists($artista, "country") ? " - " . $artista->country : null) . (property_exists($artista, "area") ? ", " . $artista->area->name : null) . "<br>";
                 echo "</a>";
                 if (property_exists($artista, "tags")) {
                     foreach ($artista->tags as $tag) {
-                        echo "<a href=\"/api/genero/listar?" . $tag->name . "\">";
+                        echo "<a href=\"/api/genero/listar?tag=" . $tag->name . "\">";
                         echo "- " . $tag->name . " ";
                         echo "</a>";
                     }
@@ -48,7 +48,7 @@ class ArtistaService
             echo $artista->annotation . "<br>";
             if (property_exists($artista, "tags")) {
                 foreach ($artista->tags as $tag) {
-                    echo "<a href=\"/api/genero/listar?" . $tag->name . "\">";
+                    echo "<a href=\"/api/genero/listar?tag=" . $tag->name . "\">";
                     echo "- " . $tag->name . " ";
                     echo "</a>";
                 }
@@ -58,6 +58,15 @@ class ArtistaService
                 foreach ($artista->releases as $release) {
                     echo "<a href=\"#" . $release->id . "\">";
                     echo "<li> " . $release->title . "</li> ";
+                    echo "</a>";
+                }
+                echo "</ul>";
+            }
+            if (property_exists($artista, "works")) {
+                echo "<ul>";
+                foreach ($artista->works as $work) {
+                    echo "<a href=\"#" . $work->id . "\">";
+                    echo "<li> " . $work->title . "</li> ";
                     echo "</a>";
                 }
                 echo "</ul>";

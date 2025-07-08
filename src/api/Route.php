@@ -130,9 +130,20 @@ class Route
                 IndexController::getInstance()->indexView();
             } else {
                 if (file_exists(__DIR__ . "/../controller/" . ucfirst($this->getController()) . "Controller.php")) {
+                    $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+
+                    $creator = new \Nyholm\Psr7Server\ServerRequestCreator(
+                        $psr17Factory, // ServerRequestFactory
+                        $psr17Factory, // UriFactory
+                        $psr17Factory, // UploadedFileFactory
+                        $psr17Factory  // StreamFactory
+                    );
+
+                    $serverRequest = $creator->fromGlobals();
+
                     $class = "\\App\\controller\\" . ucfirst($this->getController()) . "Controller";
                     $method = $this->getMethod();
-                    $ob = new $class();
+                    $ob = new $class($serverRequest);
                     $ob->$method();
                 } else {
                     throw new Exception('URL inválida.');
