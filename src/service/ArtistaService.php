@@ -2,38 +2,43 @@
 
 namespace App\service;
 
+use App\infra\http\Curl;
+use App\model\enum\MusicBrainzEnum;
+use Exception;
+
 class ArtistaService
 {
     public function listar()
     {
-        $url = "https://musicbrainz.org/ws/2/artist/?query=" . $_SERVER['QUERY_STRING'] . "&area=f45b47f8-5796-386e-b172-6c31b009a5d8&country=BR&fmt=json";
+        try {
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . "?query=" . $_SERVER['QUERY_STRING'] . "&fmt=json&limit50";
 
-        // Inicializa o cURL
-        $ch = curl_init();
+            $response = Curl::getInstance()->get($url);
 
-        // Configurações da requisição
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["User-Agent: App/1.0 (contato@meusite.com)"]);
+            $ob = json_decode($response);
 
-        // Executa a requisição
-        $response = curl_exec($ch);
-
-        if ($response === false) {
-            var_dump($ch);
+            foreach ($ob->artists as $artista) {
+                echo "<a href=\"/api/artista/detalhar?" . $artista->id . "\">";
+                echo $artista->name . (property_exists($artista, "country") ? " - " . $artista->country : null) . (property_exists($artista, "area") ? ", " . $artista->area->name : null) . "<br>";
+                echo "</a>";
+            }
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
         }
+    }
 
-        // Fecha a conexão cURL
-        curl_close($ch);
+    public function detalhar($id)
+    {
+        try {
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . $id . "?fmt=json";
 
-        $ob = json_decode($response);
+            $response = Curl::getInstance()->get($url);
 
-        /* echo "<pre>";
-        var_dump($ob->artists);
-        echo "</pre>"; */
-        foreach ($ob->artists as $artista) {
-            echo $artista->name . (property_exists($artista, "country") ? " - " . $artista->country : null) . (property_exists($artista, "area") ? ", " . $artista->area->name : null) . "<br>";
+            $ob = json_decode($response);
+
+            var_dump($ob);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
         }
-
     }
 }

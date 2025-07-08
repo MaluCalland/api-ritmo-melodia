@@ -17,4 +17,9 @@ class ArtistaController
     {
         $this->artistaService->listar();
     }
+
+    public function detalhar()
+    {
+        $this->artistaService->detalhar($_SERVER['QUERY_STRING']);
+    }
 }
