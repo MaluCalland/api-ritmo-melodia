@@ -11,7 +11,7 @@ class ArtistaService
     public function listar()
     {
         try {
-            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . "?query=" . $_SERVER['QUERY_STRING'] . "&fmt=json&limit50";
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . "?query=" . $_SERVER['QUERY_STRING'] . "&fmt=json&limit=100";
 
             $response = Curl::getInstance()->get($url);
 
@@ -30,7 +30,7 @@ class ArtistaService
     public function detalhar($id)
     {
         try {
-            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . $id . "?fmt=json";
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . $id . "?fmt=json&inc=tags";
 
             $response = Curl::getInstance()->get($url);
 

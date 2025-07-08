@@ -5,6 +5,5 @@ enum MusicBrainzEnum: string
 {
     case path = 'https://musicbrainz.org/ws/2/';
     case artista = 'artist/';
-    case generos = 'genre/';
-    case genero = 'tag/';
+    case generos = 'artist?query=tag:';
 }

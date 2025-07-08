@@ -9,15 +9,15 @@ class GeneroService
     public function listar()
     {
         try {
-            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::generos->value . "all?fmt=json";
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::generos->value . $_SERVER['QUERY_STRING'] . "&fmt=json&limit=100";
 
             $response = Curl::getInstance()->get($url);
 
             $ob = json_decode($response);
 
-            foreach ($ob->genres as $genero) {
-                echo "<a href=\"/api/genero/detalhar?" . $genero->id . "\">";
-                echo $genero->name . "<br>";
+            foreach ($ob->artists as $artista) {
+                echo "<a href=\"/api/artista/detalhar?" . $artista->id . "\">";
+                echo $artista->name . "<br>";
                 echo "</a>";
             }
         } catch (Exception $e) {
