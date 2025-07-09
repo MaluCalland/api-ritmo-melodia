@@ -6,7 +6,7 @@ use App\infra\http\Curl;
 use App\model\enum\MusicBrainzEnum;
 use Exception;
 
-class ArtistaService
+class AlbumService
 {
     public function listar($name)
     {
@@ -38,12 +38,13 @@ class ArtistaService
     public function detalhar($id)
     {
         try {
-            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::artista->value . $id . "?fmt=json&inc=tags+releases+works+annotation";
+            $url = MusicBrainzEnum::path->value . MusicBrainzEnum::album_release->value . $id . "?fmt=json&inc=artists+labels+collections";
 
             $response = Curl::getInstance()->get($url);
 
-            $artista = json_decode($response);
+            $album = json_decode($response);
 
+            /*
             echo $artista->name . (property_exists($artista, "country") ? " - " . $artista->country : null) . (property_exists($artista, "area") ? ", " . $artista->area->name : null) . "<br>";
             echo $artista->annotation . "<br>";
             if (property_exists($artista, "tags")) {
@@ -53,16 +54,7 @@ class ArtistaService
                     echo "</a>";
                 }
             }
-            if (property_exists($artista, "releases")) {
-                echo "<ul>";
-                foreach ($artista->releases as $release) {
-                    echo "<a href=\"/api/album/detalhar?id=" . $release->id . "\">";
-                    echo "<li> " . $release->title . "</li> ";
-                    echo "</a>";
-                }
-                echo "</ul>";
-            }
-            if (property_exists($artista, "works")) {
+            if (property_exists($album, "works")) {
                 echo "<ul>";
                 foreach ($artista->works as $work) {
                     echo "<a href=\"#" . $work->id . "\">";
@@ -71,6 +63,10 @@ class ArtistaService
                 }
                 echo "</ul>";
             }
+            */
+            echo "<pre>";
+            var_dump($album);
+            echo "</pre>";
         } catch (Exception $e) {
             var_dump($e->getMessage());
         }
