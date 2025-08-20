@@ -1,4 +1,4 @@
-# api-ritmo-melodia
+# Api para Projeto Ritmo&Melodia
 
 # Tecnologias Utilizadas
 
